@@ -35,3 +35,7 @@ $sudo docker exec -it  923  bash   #923是某个容器的 CONTAINER ID 属性. �
 }
 ```
 
+
+
+
+
