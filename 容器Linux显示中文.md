@@ -19,6 +19,7 @@ POSIX
 # 设置为  C.utf8 这个所支持的编码即可
 echo "export LANG=C.utf8"  >> ~/.bashrc
 
+#重新载入环境变量
 source ~/.bashrc
 ```
 
