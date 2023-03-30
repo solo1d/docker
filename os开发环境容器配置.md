@@ -2,27 +2,55 @@
 
 
 
-## 1、下载容器
+## 1、下载X86容器
 
 ```bash
-$ docker pull ubuntu    # 最新版的 ubuntu 即可
+$ docker pull amd64/ubuntu    # 最新版的 X86模式的 ubuntu 即可
 ```
 
-## 2、启动容器并映射开发目录
+## 2、配置X86运行环境
+
+使用 buildx，需要开启docker的实验功能后，才可以使用，开启方式：
+
+- 打开 Docker.app 的设置界面 --> Docker Engine 里面的json配置窗口
+  - 添加如下内容：
+
+```json
+{
+    "experimental": true
+}
+```
+
+- 编辑 ～/.docker/config.json 添加如下内容：
+
+```json
+"experimental" : "enabled"
+```
+
+重启Docker即可（需要Docker版本为4.17以上）
+
+
+
+## 3、启动容器并映射开发目录
 
 ```bash
 # 将本地的   /home/ns/os 目录挂载到容器的 /root/os 目录（读写）。
 #  并启动 ubuntu 最新的容器 到后台
-$ docker run --name ubuntu_os -it -d --mount type=bind,source=/home/ns/os,target=/root/os ubuntu
+$ docker run --name ubuntu_os -it -d --mount type=bind,source=/home/ns/os,target=/root/os amd64/ubuntu
+
+# 输出内容：
+WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+5250ba5d6c871c0625e352817849463693e5cceef7db2080d15a6ad973663d99
+                                                                   
 ```
 
-## 3、进入ubuntu容器
+## 4、进入ubuntu容器
 
 ```bash
-$ docker exec  -it fa06210d5add  /bin/bash     # 通过 docker ps 来获取容器id
+$ docker exec  -it 5250ba5d6c  /bin/bash     # 通过 docker ps 来获取容器id
 ```
 
-## 4、设置显示中文
+## 5、设置显示中文
 
 ```bash
 #先查看是否有支持的编码
@@ -44,33 +72,17 @@ echo "export LANG=C.utf8"  >> ~/.bashrc
 source ~/.bashrc
 ```
 
-## 5、配置apt为国内源
-
-配置脚本 [get-docker.sh](sh_source/get-docker.sh)
+## 6、配置apt为国内源
 
 将 `/etc/apt/sources.list` 这个文件的内容全部注释，并添加下面的内容。
 
 ```ini
-# 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
-deb https://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy main restricted universe multiverse
-# deb-src https://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy main restricted universe multiverse
-deb https://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy-updates main restricted universe multiverse
-# deb-src https://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy-updates main restricted universe multiverse
-deb https://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy-backports main restricted universe multiverse
-# deb-src https://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy-backports main restricted universe multiverse
+#先备份
+$ cp -a /etc/apt/sources.list /etc/apt/sources.list.bak
 
-# deb https://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy-security main restricted universe multiverse
-# # deb-src https://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy-security main restricted universe multiverse
+# 更换为 阿里云(x86) 源
+$ sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
 
-deb http://ports.ubuntu.com/ubuntu-ports/ jammy-security main restricted universe multiverse
-# deb-src http://ports.ubuntu.com/ubuntu-ports/ jammy-security main restricted universe multiverse
-
-# 预发布软件源，不建议启用
-# deb https://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy-proposed main restricted universe multiverse
-# # deb-src https://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy-proposed main restricted universe multiverse
-```
-
-```bash
 # 再执行清空和更新
 $ apt clean
 $ apt update
@@ -78,20 +90,24 @@ $ apt update
 
 
 
-## 6、配置开发环境
+## 7、配置开发环境
 
 ```bash
+$ apt install -y vim  gcc make nasm   
+
+
+# 下面内容暂不需要
 # 取消系统最小化配置
-$ unminimize
+# $ unminimize
 
-$ apt install man   #安装man
-
-$ apt install -y  gcc make nasm  gcc-arm-linux-gnueabihf 
+# $ apt install man   #安装man
 ```
 
 
 
 ```bash
+在使用ARM 版本的ubuntu情况下，需要交叉编译工具。但是我还没有调试好，暂时屏蔽
+# gcc-arm-linux-gnueabihf 
 $ arm-linux-gnueabihf-gcc -mbe32   #编译32位程序
 $ arm-linux-gnueabihf-ld --verbose   #查看支持的仿真类型
 elf32-bigarm

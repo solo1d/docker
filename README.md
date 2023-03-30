@@ -93,13 +93,11 @@ $ docker container prune
       "enabled": true
     }
   },
-  "debug": true,
   "experimental": true,
   "features": {
     "buildkit": true
-  }
+  },
   // 加速地址
-  ,
   "registry-mirrors": [
     "http://hub-mirror.c.163.com"
   ]
