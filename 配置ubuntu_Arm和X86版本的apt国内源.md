@@ -1,3 +1,15 @@
+## 配置ubuntu_X86版本的apt国内源
+
+```bash
+# 更换为 阿里云(x86) 源
+$ sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
+# 再执行清空和更新
+$ apt clean
+$ apt update
+```
+
+
+
 ## 配置ubuntu_Arm版本的apt国内源
 
 配置脚本 [get-docker.sh](sh_source/get-docker.sh)
