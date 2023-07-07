@@ -32,7 +32,7 @@ $ docker images
 安装完成后，我们可以使用以下命令来运行 mysql 容器：
 
 ```bash
-$ docker run -itd --name mysql-test -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql
+$ docker run -itd --name mysql-test -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456             mysql
 
 # 参数说明：
 -p 3306:3306 ：映射容器服务的 3306 端口到宿主机的 3306 端口，外部主机可以直接通过 宿主机ip:3306 访问到 MySQL 的服务。
