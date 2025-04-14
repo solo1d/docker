@@ -107,6 +107,16 @@ deb http://mirrors.ustc.edu.cn/ubuntu/ jammy-backports main restricted universe 
 # deb-src http://mirrors.ustc.edu.cn/ubuntu/ jammy-backports main restricted universe multiverse
 ```
 
+```bash
+#debian 12  bookworm 源
+deb http://mirrors.aliyun.com/debian bookworm main non-free contrib
+deb http://mirrors.aliyun.com/debian bookworm-updates main non-free contrib
+deb http://mirrors.aliyun.com/debian-security bookworm-security main non-free contrib
+deb-src http://mirrors.aliyun.com/debian bookworm main non-free contrib
+deb-src http://mirrors.aliyun.com/debian bookworm-updates main non-free contrib
+deb-src http://mirrors.aliyun.com/debian-security bookworm-security main non-free contrib
+```
+
 
 
 ## 7、配置开发环境
